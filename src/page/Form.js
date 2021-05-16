@@ -118,21 +118,35 @@ export default class CLogForm extends React.Component {
         }
 
         const start = moment().locale('ko').startOf('days');
-        const end = start.add(parseInt(days), 'days');
+        const end = moment(start).add(parseInt(days), 'days');
 
         const id = moment().locale('ko').format('YYYYMMDDHHmmss');
+        
         let cLogs = get('cLogs');
         if (!cLogs) cLogs = [];
         cLogs.push(id);
-
         set('cLogs', cLogs);
-        set(id, {
+
+        let cLog = {
             id, title, desc,
             days: parseInt(days),
             start: start.format('YYYY.MM.DD'),
             end: end.format('YYYY.MM.DD'),
-            total: parseInt(total)
-        });
+            total: parseInt(total),
+            count: 0
+        };
+        set(id, cLog);
+
+        let dayBoxes = [];
+        for (let d = 1; d <= cLog.days; d++) {
+            dayBoxes.push({
+                day: d,
+                count: 0
+            });
+        }
+        set(`boxes-${id}`, dayBoxes);
+
+        this.props.history.goBack();
     }
 
 }
