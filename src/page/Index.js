@@ -23,7 +23,7 @@ const Title = styled.h1`
 const MyLink = styled(Link)`
     margin-top: 20px;
     font-size: 17px;
-    color: #424242;
+    color: #616161;
     cursor: pointer;
     text-decoration: none;
 

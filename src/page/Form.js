@@ -50,7 +50,7 @@ const Button = styled.button`
     border-style: none;
     border-radius: 3px;
     background-color: #212121;
-    color: #424242;
+    color: #616161;
     cursor: pointer;
     box-sizing: border-box;
 
@@ -80,7 +80,7 @@ export default class CLogForm extends React.Component {
                 <Form>
                     <Input type="text" name="title" value={title} onChange={this.onChange} placeholder="제목" />
                     <Textarea type="text" name="desc" value={desc} onChange={this.onChange} rows="5" placeholder="간단한 설명"></Textarea>
-                    <Input type="number" name="days" value={days} onChange={this.onChange} placeholder="챌린지 일수" />
+                    <Input type="number" name="days" value={days} onChange={this.onChange} placeholder="챌린지 일수(최대 30일)" />
                     <Input type="number" name="total" value={total} onChange={this.onChange} placeholder="챌린지 횟수" />
                     <Button onClick={() => this.createChallenge()}>도전!</Button>
                 </Form>
@@ -112,8 +112,13 @@ export default class CLogForm extends React.Component {
             return;
         }
 
+        if (parseInt(days) > 30) {
+            alert('일수는 30일을 넘을 수 없습니다.');
+            return;
+        }
+
         if (!total) {
-            alert('횟수을 입력하세요.');
+            alert('횟수를 입력하세요.');
             return;
         }
 
