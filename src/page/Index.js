@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { get } from '../util/Storage';
 
 const Page = styled.div`
   position: absolute;
@@ -33,10 +34,13 @@ const MyLink = styled(Link)`
 `;
 
 function Index() {
+    const cLogs = get('cLogs');
+
     return (
         <Page>
             <Title>CLog</Title>
             <MyLink to="/form">Create</MyLink>
+            {(cLogs && cLogs.length > 0) && <MyLink to="/home">View</MyLink>}
         </Page>
     );
 }

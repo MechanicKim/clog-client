@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Header = styled.header`
     width: 100%;
-    padding: 10px;
+    padding: 15px 10px;
     display: flex;
     flex-direction: row;
     box-sizing: border-box;

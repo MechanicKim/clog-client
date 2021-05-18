@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 const Wrap = styled.div`
@@ -52,16 +53,34 @@ const Button = styled.button`
     }
 `;
 
-export default function HomePopup(props) {
-    const { count, onChange, regist } = props;
+export default class HomePopup extends React.Component {
 
-    return (
-        <Wrap>
-            <Popup>
-                <Title>횟수를 입력하세요.</Title>
-                <Input value={count} onChange={onChange} type="number" />
-                <Button onClick={() => regist()}>확인</Button>
-            </Popup>
-        </Wrap>
-    );
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            count: this.props.count
+        };
+    }
+
+    render() {
+        const { count } = this.state;
+        const { regist } = this.props;
+        return (
+            <Wrap>
+                <Popup>
+                    <Title>횟수를 입력하세요.</Title>
+                    <Input value={count} onChange={this.onChangeCount} type="number" />
+                    <Button onClick={() => regist(count)}>확인</Button>
+                </Popup>
+            </Wrap>
+        );
+    }
+
+    onChangeCount = e => {
+        this.setState({
+            count: e.target.value
+        });
+    }
+
 }

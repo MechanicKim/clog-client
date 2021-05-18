@@ -16,7 +16,7 @@ export default function HomeChart(props) {
                         return `Day ${b.day}`;
                     }),
                     datasets: [{
-                        label: '일별 실천 횟수',
+                        label: '실천 횟수',
                         borderWidth: 1,
                         data: boxes.map(b => b.count),
                         backgroundColor: 'rgba(54, 162, 235, 0.2)'
