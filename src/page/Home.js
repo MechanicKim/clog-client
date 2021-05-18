@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Bar } from 'react-chartjs-2';
 import { get, set } from '../util/Storage';
 
 import HomeHeader from '../component/HomeHeader';
 import HomeNav from '../component/HomeNav';
 import HomeStat from '../component/HomeStat';
+import HomeChart from '../component/HomeChart';
 import HomePopup from '../component/HomePopup';
 
 const Page = styled.div`
@@ -26,11 +26,11 @@ const Body = styled.div`
 
 const Section = styled.section`
     flex: 1;
-    padding: 15px;
 `;
 
 const BoxWrap = styled.article`
     display: inline-block;
+    padding: 0 15px;
 `;
 
 const Box = styled.div`
@@ -62,9 +62,7 @@ const BoxCount = styled.span`
     color: #212121;
 `;
 
-const ChartWrap = styled.article`
-    
-`;
+
 
 export default class Home extends React.Component {
 
@@ -94,37 +92,13 @@ export default class Home extends React.Component {
                     <Section>
                         <HomeStat cLog={cLog} />
                         <BoxWrap>
-                        {boxes.map((box, i) => {
-                            return (
-                                <Box key={i} onClick={() => this.selectBox(i)}>
-                                    <BoxDay>Day{box.day}</BoxDay>
-                                    <BoxCount>{box.count}</BoxCount>
-                                </Box>
-                            );
-                        })}
-                        <ChartWrap>
-                            <Bar
-                                data={{
-                                    labels: boxes.map(b => {
-                                        return `Day ${b.day}`;
-                                    }),
-                                    datasets: [{
-                                        label: '일별 실천 횟수',
-                                        borderWidth: 1,
-                                        data: boxes.map(b => b.count),
-                                        backgroundColor: 'rgba(54, 162, 235, 0.2)'
-                                    }]
-                                }}
-                                options={{
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    },
-                                    maintainAspectRatio: false 
-                                }}
-                            />
-                        </ChartWrap>
+                        {boxes.map((box, i) => (
+                            <Box key={i} onClick={() => this.selectBox(i)}>
+                                <BoxDay>Day{box.day}</BoxDay>
+                                <BoxCount>{box.count}</BoxCount>
+                            </Box>
+                        ))}
+                        <HomeChart boxes={boxes} />
                         </BoxWrap>
                     </Section>
                 </Body>

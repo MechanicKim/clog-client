@@ -5,18 +5,18 @@ const Nav = styled.nav`
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    background-color: #212121;
+    border-right: 2px solid #eeeeee;
 `;
 
 const Button = styled.button`
     padding: 15px;
-    color: ${props => props.selected ? '#ffffff' : '#616161'};
+    color: ${props => props.selected ? '#212121' : '#757575'};
     border-style: none;
     text-align: left;
-    background-color: #212121;
+    background-color: #ffffff;
 
     &:hover {
-        background-color: #424242;
+        background-color: #eeeeee;
         cursor: pointer;
     }
 `;

@@ -7,15 +7,22 @@ const Stat = styled.article`
 `;
 
 const Desc = styled.div`
-    color: #212121;
+    padding: 30px 15px;
+    font-size: 30px;
+    color: #ffffff;
+    background-color: #263238;
 `;
 
 const StatDays = styled.div`
+    padding: 10px 15px;
     color: #212121;
+    background-color: #eceff1;
 `;
 
 const StatCount = styled.div`
+    padding: 10px 15px;
     color: #212121;
+    background-color: #eceff1;
 `;
 
 export default function HomeStat(props) {

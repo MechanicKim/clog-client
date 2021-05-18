@@ -43,7 +43,7 @@ const Button = styled.button`
     border-radius: 3px;
     outline: none;
     box-sizing: border-box;
-    color: #424242;
+    color: #616161;
     background-color: transparent;
 
     &:hover {
