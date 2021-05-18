@@ -4,7 +4,6 @@ import {
   Route
 } from 'react-router-dom';
 
-import Index from './page/Index';
 import Home from './page/Home';
 import Form from './page/Form';
 
