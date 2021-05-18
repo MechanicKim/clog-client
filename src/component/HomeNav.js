@@ -3,14 +3,14 @@ import { get } from '../util/Storage';
 
 const Nav = styled.nav`
     overflow-y: auto;
-    border-right: 1px solid #424242;
     display: flex;
     flex-direction: column;
+    background-color: #212121;
 `;
 
 const Button = styled.button`
     padding: 15px;
-    color: ${props => props.selected ? '#ffffff' : '#424242'};
+    color: ${props => props.selected ? '#ffffff' : '#616161'};
     border-style: none;
     text-align: left;
     background-color: #212121;

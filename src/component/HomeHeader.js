@@ -6,8 +6,8 @@ const Header = styled.header`
     padding: 10px;
     display: flex;
     flex-direction: row;
-    border-bottom: 3px solid #424242;
     box-sizing: border-box;
+    background-color: #212121;
 `;
 
 const Title = styled.h2`
@@ -25,7 +25,7 @@ const Nav = styled.nav`
 
 const MyLink = styled(Link)`
     font-size: 17px;
-    color: #424242;
+    color: #616161;
     cursor: pointer;
     text-decoration: none;
 

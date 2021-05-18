@@ -7,15 +7,15 @@ const Stat = styled.article`
 `;
 
 const Desc = styled.div`
-    color: #ffffff;
+    color: #212121;
 `;
 
 const StatDays = styled.div`
-    color: #ffffff;
+    color: #212121;
 `;
 
 const StatCount = styled.div`
-    color: #ffffff;
+    color: #212121;
 `;
 
 export default function HomeStat(props) {

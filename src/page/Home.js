@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { Bar } from 'react-chartjs-2';
 import { get, set } from '../util/Storage';
 
 import HomeHeader from '../component/HomeHeader';
 import HomeNav from '../component/HomeNav';
 import HomeStat from '../component/HomeStat';
+import HomePopup from '../component/HomePopup';
 
 const Page = styled.div`
   position: absolute;
@@ -15,7 +16,6 @@ const Page = styled.div`
   left: 0;
   display: flex;
   flex-direction: column;
-  background-color: #212121;
 `;
 
 const Body = styled.div`
@@ -27,6 +27,10 @@ const Body = styled.div`
 const Section = styled.section`
     flex: 1;
     padding: 15px;
+`;
+
+const BoxWrap = styled.article`
+    display: inline-block;
 `;
 
 const Box = styled.div`
@@ -58,56 +62,8 @@ const BoxCount = styled.span`
     color: #212121;
 `;
 
-const PopupWrap = styled.div`
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.7)
-`;
-
-const Popup = styled.div`
-    width: 200px;
-    padding: 20px;
-    border-radius: 5px;
-`;
-
-const PopupTitle = styled.h3`
-    margin: 0;
-    font-size: 17px;
-    font-weight: normal;
-    color: #ffffff;
-`;
-
-const PopupInput = styled.input`
-    width: 100%;
-    margin: 10px 0;
-    padding: 10px;
-    border-style: none;
-    border-radius: 3px;
-    outline: none;
-    box-sizing: border-box;
-    background-color: #ffffff;
-`;
-
-const PopupButton = styled.button`
-    width: 100%;
-    padding: 10px;
-    border-style: none;
-    border-radius: 3px;
-    outline: none;
-    box-sizing: border-box;
-    color: #424242;
-    background-color: transparent;
-
-    &:hover {
-        color: #ffffff;
-        cursor: pointer;
-    }
+const ChartWrap = styled.article`
+    
 `;
 
 export default class Home extends React.Component {
@@ -137,7 +93,7 @@ export default class Home extends React.Component {
                     <HomeNav cLogKeys={cLogKeys} cLog={cLog} select={this.selectCLog} />
                     <Section>
                         <HomeStat cLog={cLog} />
-                        <article>
+                        <BoxWrap>
                         {boxes.map((box, i) => {
                             return (
                                 <Box key={i} onClick={() => this.selectBox(i)}>
@@ -146,17 +102,34 @@ export default class Home extends React.Component {
                                 </Box>
                             );
                         })}
-                        </article>
+                        <ChartWrap>
+                            <Bar
+                                data={{
+                                    labels: boxes.map(b => {
+                                        return `Day ${b.day}`;
+                                    }),
+                                    datasets: [{
+                                        label: '일별 실천 횟수',
+                                        borderWidth: 1,
+                                        data: boxes.map(b => b.count),
+                                        backgroundColor: 'rgba(54, 162, 235, 0.2)'
+                                    }]
+                                }}
+                                options={{
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    },
+                                    maintainAspectRatio: false 
+                                }}
+                            />
+                        </ChartWrap>
+                        </BoxWrap>
                     </Section>
                 </Body>
                 {popOn && (
-                    <PopupWrap>
-                        <Popup>
-                            <PopupTitle>횟수를 입력하세요.</PopupTitle>
-                            <PopupInput value={count} onChange={this.onChangeCount} type="number" />
-                            <PopupButton onClick={() => this.registCount()}>확인</PopupButton>
-                        </Popup>
-                    </PopupWrap>
+                    <HomePopup count={count} onChange={this.onChangeCount} regist={this.registCount} />
                 )}
             </Page>
         );
