@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { get } from '../util/Storage';
+import { getCLog, getCLogBoxes } from '../util/Storage';
 
 const Nav = styled.nav`
     overflow-y: auto;
@@ -13,7 +13,7 @@ const Button = styled.button`
     color: ${props => props.selected ? '#212121' : '#757575'};
     border-style: none;
     text-align: left;
-    background-color: #ffffff;
+    background-color: ${props => props.selected ? '#eeeeee' : '#ffffff'};
 
     &:hover {
         background-color: #eeeeee;
@@ -27,8 +27,8 @@ export default function HomeNav(props) {
     return (
         <Nav>
         {cLogKeys.map(key => {
-            const log = get(key);
-            const boxes = get(`boxes-${key}`);
+            const log = getCLog(key);
+            const boxes = getCLogBoxes(`boxes-${key}`);
             return (
                 <Button key={log.id}
                     selected={log.id === cLog.id}

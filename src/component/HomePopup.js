@@ -44,11 +44,10 @@ const Button = styled.button`
     border-radius: 3px;
     outline: none;
     box-sizing: border-box;
-    color: #616161;
-    background-color: transparent;
+    color: #ffffff;
+    background-color: #212121;
 
     &:hover {
-        color: #ffffff;
         cursor: pointer;
     }
 `;

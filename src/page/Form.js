@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { get, set } from '../util/Storage';
-import * as moment from 'moment';
+import { createCLog } from '../util/Storage';
 
 const Page = styled.div`
     position: absolute;
@@ -122,35 +121,7 @@ export default class CLogForm extends React.Component {
             return;
         }
 
-        const start = moment().locale('ko').startOf('days');
-        const end = moment(start).add(parseInt(days), 'days');
-
-        const id = moment().locale('ko').format('YYYYMMDDHHmmss');
-        
-        let cLogs = get('cLogs');
-        if (!cLogs) cLogs = [];
-        cLogs.push(id);
-        set('cLogs', cLogs);
-
-        let cLog = {
-            id, title, desc,
-            days: parseInt(days),
-            start: start.format('YYYY.MM.DD'),
-            end: end.format('YYYY.MM.DD'),
-            total: parseInt(total),
-            count: 0
-        };
-        set(id, cLog);
-
-        let dayBoxes = [];
-        for (let d = 1; d <= cLog.days; d++) {
-            dayBoxes.push({
-                day: d,
-                count: 0
-            });
-        }
-        set(`boxes-${id}`, dayBoxes);
-
+        createCLog(title, desc, days, total);
         this.props.history.goBack();
     }
 

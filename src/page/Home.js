@@ -1,6 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { get, set, remove } from '../util/Storage';
+import {
+    getCLogKeys,
+    getCLog,
+    getCLogBoxes,
+    writeCount,
+    deleteCLog
+} from '../util/Storage';
 
 import HomeHeader from '../component/HomeHeader';
 import HomeNav from '../component/HomeNav';
@@ -48,7 +54,7 @@ export default class Home extends React.Component {
     constructor(props) {
         super(props);
 
-        const cLogKeys = get('cLogs');
+        const cLogKeys = getCLogKeys();
 
         if (!cLogKeys) {
             this.state = {
@@ -62,8 +68,8 @@ export default class Home extends React.Component {
         } else {
             this.state = {
                 cLogKeys,
-                cLog: get(cLogKeys[0]),
-                boxes: get(`boxes-${cLogKeys[0]}`),
+                cLog: getCLog(cLogKeys[0]),
+                boxes: getCLogBoxes(cLogKeys[0]),
                 boxIndex: -1,
                 popOn: false,
                 count: ''
@@ -109,25 +115,7 @@ export default class Home extends React.Component {
         const confirmed = window.confirm('해당 챌린지의 모든 기록이 삭제됩니다. 삭제할까요?');
         if (confirmed) {
             const { cLogKeys, cLog } = this.state;
-            const keys = cLogKeys.filter(key => key !== cLog.id);
-            set('cLogs', keys);
-            remove(`boxes-${cLog.id}`);
-            remove(cLog.id);
-
-            if (keys.length === 0) {
-                remove('cLogs');
-                this.setState({
-                    cLogKeys: [],
-                    cLog: {},
-                    boxes: []
-                });
-            } else {
-                this.setState({
-                    cLogKeys: keys,
-                    cLog: get(keys[0]),
-                    boxes: get(`boxes-${keys[0]}`)
-                });
-            }
+            this.setState(deleteCLog(cLogKeys, cLog));
             alert('삭제했습니다.');
         }
     }
@@ -143,18 +131,8 @@ export default class Home extends React.Component {
 
     registCount = count => {
         const { cLog, boxes, boxIndex } = this.state;
-
-        boxes[boxIndex].count = parseInt(count || '0');
-        set(`boxes-${cLog.id}`, boxes);
-
-        let totalCount = 0;
-        boxes.forEach(box => {
-            totalCount += box.count;
-        });
-        cLog.count = totalCount;
-        set(cLog.id, cLog);
-        
-        this.setState({ cLog, boxes, boxIndex: -1, count: '', popOn: false });
+        const result = writeCount(count, boxes, boxIndex, cLog);
+        this.setState({ ...result, boxIndex: -1, count: '', popOn: false });
     }
 
 }
