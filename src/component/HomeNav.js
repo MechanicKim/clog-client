@@ -6,6 +6,8 @@ const Nav = styled.nav`
     display: flex;
     flex-direction: column;
     border-right: 2px solid #eeeeee;
+    resize: horizontal;
+    overflow: auto;
 `;
 
 const Button = styled.button`

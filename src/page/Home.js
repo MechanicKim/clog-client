@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import styled from 'styled-components';
 import {
     getCLogKeys,
@@ -79,6 +80,7 @@ export default class Home extends React.Component {
 
     render() {
         const { cLogKeys, cLog, boxes, popOn, count } = this.state;
+        const dayNum = moment().diff(moment(cLog.start, 'YYYY.MM.DD').startOf('days'), 'days') + 1;
 
         return (
             <Page>
@@ -89,7 +91,7 @@ export default class Home extends React.Component {
                         <Section>
                             <HomeStat cLog={cLog} updateLog={this.updateLog} deleteLog={this.deleteLog} />
                             <Wrap>
-                                <HomeDayBox boxes={boxes} select={this.selectBox} />
+                                <HomeDayBox boxes={boxes} dayNum={dayNum} select={this.selectBox} />
                                 <HomeChart boxes={boxes} />
                             </Wrap>
                         </Section>

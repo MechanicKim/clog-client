@@ -7,7 +7,7 @@ const Box = styled.div`
     display: inline-flex;
     flex-direction: column;
     border: 1px solid #eeeeee;
-    background-color: #ffffff;
+    background-color: ${props => props.passed ? '#9e9e9e' : '#ffffff'};
 
     &:hover {
         background-color: #eeeeee;
@@ -30,12 +30,12 @@ const Count = styled.span`
 `;
 
 export default function HomeDayBox(props) {
-    const { boxes, select } = props;
+    const { boxes, dayNum, select } = props;
 
     return (
         <>
         {boxes.map((box, i) => (
-            <Box key={i} onClick={() => select(i)}>
+            <Box key={i} passed={box.day <= dayNum} onClick={() => select(i)}>
                 <Day>Day{box.day}</Day>
                 <Count>{box.count}</Count>
             </Box>
