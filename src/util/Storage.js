@@ -55,6 +55,13 @@ export function createCLog(title, desc, days, total) {
     set(`boxes-${id}`, dayBoxes);
 }
 
+export function updateCLog(id, title, desc) {
+    let cLog = get(id);
+    cLog.title = title;
+    cLog.desc = desc;
+    set(id, cLog);
+}
+
 export function writeCount(count, boxes, boxIndex, cLog) {
     boxes[boxIndex].count = parseInt(count || '0');
     set(`boxes-${cLog.id}`, boxes);

@@ -73,8 +73,7 @@ export default class Home extends React.Component {
     render() {
         const { cLogKeys, cLog, boxes, popOn, count } = this.state;
         const dayNum = moment().diff(moment(cLog.start, 'YYYY.MM.DD').startOf('days'), 'days');
-        console.log(dayNum);
-
+        
         return (
             <Page>
                 <HomeHeader />
@@ -97,7 +96,8 @@ export default class Home extends React.Component {
     }
 
     updateLog = () => {
-        alert('개발중...');
+        const { cLog } = this.state;
+        this.props.history.push(`/form/${cLog.id}`);
     }
 
     deleteLog = () => {

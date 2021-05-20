@@ -21,7 +21,7 @@ const Desc = styled.span`
 
 const Button = styled.button`
     font-size: 17px;
-    color: #616161;
+    color: #bdbdbd;
     border-style: none;
     background-color: transparent;
 

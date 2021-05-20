@@ -25,7 +25,7 @@ const Nav = styled.nav`
 
 const MyLink = styled(Link)`
     font-size: 17px;
-    color: #616161;
+    color: #bdbdbd;
     cursor: pointer;
     text-decoration: none;
 
