@@ -32,7 +32,7 @@ const Button = styled.button`
 `;
 
 const StatDays = styled.div`
-    padding: 10px 15px;
+    padding: 10px 15px 0 15px;
     color: #212121;
     background-color: #eceff1;
 `;

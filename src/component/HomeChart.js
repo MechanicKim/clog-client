@@ -13,7 +13,7 @@ export default function HomeChart(props) {
             <Bar
                 data={{
                     labels: boxes.map(b => {
-                        return `Day ${b.day}`;
+                        return `${b.date}`;
                     }),
                     datasets: [{
                         label: '실천 횟수',

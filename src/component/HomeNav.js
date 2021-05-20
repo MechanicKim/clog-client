@@ -16,6 +16,9 @@ const Button = styled.button`
     border-style: none;
     text-align: left;
     background-color: ${props => props.selected ? '#eeeeee' : '#ffffff'};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &:hover {
         background-color: #eeeeee;

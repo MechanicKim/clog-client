@@ -14,6 +14,7 @@ import HomeNav from '../component/HomeNav';
 import HomeStat from '../component/HomeStat';
 import HomeDayBox from '../component/HomeDayBox';
 import HomeChart from '../component/HomeChart';
+import HomeEmpty from '../component/HomeEmpty';
 import HomePopup from '../component/HomePopup';
 
 const Page = styled.div`
@@ -30,15 +31,6 @@ const Body = styled.div`
     flex: 1;
     display: flex;
     flex-direction: row;
-`;
-
-const Empty = styled.div`
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    line-height: 150%;
 `;
 
 const Section = styled.section`
@@ -80,7 +72,8 @@ export default class Home extends React.Component {
 
     render() {
         const { cLogKeys, cLog, boxes, popOn, count } = this.state;
-        const dayNum = moment().diff(moment(cLog.start, 'YYYY.MM.DD').startOf('days'), 'days') + 1;
+        const dayNum = moment().diff(moment(cLog.start, 'YYYY.MM.DD').startOf('days'), 'days');
+        console.log(dayNum);
 
         return (
             <Page>
@@ -97,14 +90,8 @@ export default class Home extends React.Component {
                         </Section>
                     </Body>
                 )}
-                {cLogKeys.length === 0 && (
-                    <Empty>
-                        생성한 챌린지가 없습니다.<br />좌측 상단에 있는 'New'를 눌러 만들어주세요.
-                    </Empty>
-                )}
-                {popOn && (
-                    <HomePopup count={count} regist={this.registCount} />
-                )}
+                {cLogKeys.length === 0 && <HomeEmpty />}
+                {popOn && <HomePopup count={count} regist={this.registCount} />}
             </Page>
         );
     }

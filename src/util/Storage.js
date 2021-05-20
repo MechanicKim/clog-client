@@ -46,9 +46,9 @@ export function createCLog(title, desc, days, total) {
     });
 
     let dayBoxes = [];
-    for (let d = 1; d <= days; d++) {
+    for (let d = 0; d < days; d++) {
         dayBoxes.push({
-            day: d,
+            date: moment(start).add(d, 'days').format('M월 D일'),
             count: 0
         });
     }
