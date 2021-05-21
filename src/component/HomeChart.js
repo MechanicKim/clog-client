@@ -1,8 +1,9 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Bar } from 'react-chartjs-2';
 
 const Chart = styled.article`
-    
 `;
 
 export default function HomeChart(props) {
@@ -34,3 +35,7 @@ export default function HomeChart(props) {
         </Chart>
     );
 }
+
+HomeChart.propTypes = {
+    boxes: PropTypes.arrayOf(PropTypes.object)
+};

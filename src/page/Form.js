@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { createCLog, updateCLog, getCLog } from '../util/Storage';
@@ -163,3 +164,8 @@ export default class CLogForm extends React.Component {
     }
 
 }
+
+CLogForm.propTypes = {
+    match: PropTypes.object,
+    history: PropTypes.object
+};

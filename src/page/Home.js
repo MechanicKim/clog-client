@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
 import {
@@ -109,8 +110,11 @@ export default class Home extends React.Component {
         }
     }
 
-    selectCLog = (cLog, boxes) => {
-        this.setState({ cLog, boxes });
+    selectCLog = (id) => {
+        this.setState({
+            cLog: getCLog(id),
+            boxes: getCLogBoxes(id)
+        });
     }
 
     selectBox = boxIndex => {
@@ -125,3 +129,7 @@ export default class Home extends React.Component {
     }
 
 }
+
+Home.propTypes = {
+    history: PropTypes.object
+};

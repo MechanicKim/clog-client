@@ -1,5 +1,7 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { getCLog, getCLogBoxes } from '../util/Storage';
+import { getCLog } from '../util/Storage';
 
 const Nav = styled.nav`
     overflow-y: auto;
@@ -33,11 +35,10 @@ export default function HomeNav(props) {
         <Nav>
         {cLogKeys.map(key => {
             const log = getCLog(key);
-            const boxes = getCLogBoxes(`boxes-${key}`);
             return (
                 <Button key={log.id}
                     selected={log.id === cLog.id}
-                    onClick={() => select(log, boxes)}>
+                    onClick={() => select(log.id)}>
                     {log.title}
                 </Button>
             );
@@ -45,3 +46,9 @@ export default function HomeNav(props) {
         </Nav>
     );
 }
+
+HomeNav.propTypes = {
+    cLogKeys: PropTypes.arrayOf(PropTypes.string),
+    cLog: PropTypes.object,
+    select: PropTypes.func
+};
