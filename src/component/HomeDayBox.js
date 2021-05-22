@@ -11,7 +11,7 @@ const Box = styled.div`
     flex-direction: column;
     border: 1px solid #eeeeee;
     border-radius: 35px;
-    background-color: ${props => props.passed ? '#9e9e9e' : '#ffffff'};
+    background-color: ${(props) => (props.passed ? '#9e9e9e' : '#ffffff')};
 
     &:hover {
         background-color: #eeeeee;
@@ -39,12 +39,12 @@ export default function HomeDayBox(props) {
 
     return (
         <>
-        {boxes.map((box, i) => (
-            <Box key={i} passed={i < dayNum} onClick={() => select(i)}>
-                <Day>{box.date}</Day>
-                <Count>{box.count}</Count>
-            </Box>
-        ))}
+            {boxes.map((box, i) => (
+                <Box key={i} passed={i < dayNum} onClick={() => select(i)}>
+                    <Day>{box.date}</Day>
+                    <Count>{box.count}</Count>
+                </Box>
+            ))}
         </>
     );
 }
@@ -52,5 +52,5 @@ export default function HomeDayBox(props) {
 HomeDayBox.propTypes = {
     boxes: PropTypes.arrayOf(PropTypes.object),
     dayNum: PropTypes.number,
-    select: PropTypes.func
+    select: PropTypes.func,
 };

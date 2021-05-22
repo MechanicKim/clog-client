@@ -14,10 +14,10 @@ const Nav = styled.nav`
 
 const Button = styled.button`
     padding: 15px;
-    color: ${props => props.selected ? '#212121' : '#757575'};
+    color: ${(props) => (props.selected ? '#212121' : '#757575')};
     border-style: none;
     text-align: left;
-    background-color: ${props => props.selected ? '#eeeeee' : '#ffffff'};
+    background-color: ${(props) => (props.selected ? '#eeeeee' : '#ffffff')};
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -33,16 +33,18 @@ export default function HomeNav(props) {
 
     return (
         <Nav>
-        {cLogKeys.map(key => {
-            const log = getCLog(key);
-            return (
-                <Button key={log.id}
-                    selected={log.id === cLog.id}
-                    onClick={() => select(log.id)}>
-                    {log.title}
-                </Button>
-            );
-        })}
+            {cLogKeys.map((key) => {
+                const log = getCLog(key);
+                return (
+                    <Button
+                        key={log.id}
+                        selected={log.id === cLog.id}
+                        onClick={() => select(log.id)}
+                    >
+                        {log.title}
+                    </Button>
+                );
+            })}
         </Nav>
     );
 }
@@ -50,5 +52,5 @@ export default function HomeNav(props) {
 HomeNav.propTypes = {
     cLogKeys: PropTypes.arrayOf(PropTypes.string),
     cLog: PropTypes.object,
-    select: PropTypes.func
+    select: PropTypes.func,
 };

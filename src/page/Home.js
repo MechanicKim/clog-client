@@ -7,7 +7,7 @@ import {
     getCLog,
     getCLogBoxes,
     writeCount,
-    deleteCLog
+    deleteCLog,
 } from '../util/Storage';
 
 import HomeHeader from '../component/HomeHeader';
@@ -19,13 +19,13 @@ import HomeEmpty from '../component/HomeEmpty';
 import HomePopup from '../component/HomePopup';
 
 const Page = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  flex-direction: column;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
 `;
 
 const Body = styled.div`
@@ -44,7 +44,6 @@ const Wrap = styled.article`
 `;
 
 export default class Home extends React.Component {
-
     constructor(props) {
         super(props);
 
@@ -57,8 +56,8 @@ export default class Home extends React.Component {
                 boxes: [],
                 boxIndex: -1,
                 popOn: false,
-                count: ''
-            }
+                count: '',
+            };
         } else {
             this.state = {
                 cLogKeys,
@@ -66,25 +65,40 @@ export default class Home extends React.Component {
                 boxes: getCLogBoxes(cLogKeys[0]),
                 boxIndex: -1,
                 popOn: false,
-                count: ''
+                count: '',
             };
         }
     }
 
     render() {
         const { cLogKeys, cLog, boxes, popOn, count } = this.state;
-        const dayNum = moment().diff(moment(cLog.start, 'YYYY.MM.DD').startOf('days'), 'days');
-        
+        const dayNum = moment().diff(
+            moment(cLog.start, 'YYYY.MM.DD').startOf('days'),
+            'days',
+        );
+
         return (
             <Page>
                 <HomeHeader />
                 {cLogKeys.length > 0 && (
                     <Body>
-                        <HomeNav cLogKeys={cLogKeys} cLog={cLog} select={this.selectCLog} />
+                        <HomeNav
+                            cLogKeys={cLogKeys}
+                            cLog={cLog}
+                            select={this.selectCLog}
+                        />
                         <Section>
-                            <HomeStat cLog={cLog} updateLog={this.updateLog} deleteLog={this.deleteLog} />
+                            <HomeStat
+                                cLog={cLog}
+                                updateLog={this.updateLog}
+                                deleteLog={this.deleteLog}
+                            />
                             <Wrap>
-                                <HomeDayBox boxes={boxes} dayNum={dayNum} select={this.selectBox} />
+                                <HomeDayBox
+                                    boxes={boxes}
+                                    dayNum={dayNum}
+                                    select={this.selectBox}
+                                />
                                 <HomeChart boxes={boxes} />
                             </Wrap>
                         </Section>
@@ -99,37 +113,38 @@ export default class Home extends React.Component {
     updateLog = () => {
         const { cLog } = this.state;
         this.props.history.push(`/form/${cLog.id}`);
-    }
+    };
 
     deleteLog = () => {
-        const confirmed = window.confirm('해당 챌린지의 모든 기록이 삭제됩니다. 삭제할까요?');
+        const confirmed = window.confirm(
+            '해당 챌린지의 모든 기록이 삭제됩니다. 삭제할까요?',
+        );
         if (confirmed) {
             const { cLogKeys, cLog } = this.state;
             this.setState(deleteCLog(cLogKeys, cLog));
             alert('삭제했습니다.');
         }
-    }
+    };
 
     selectCLog = (id) => {
         this.setState({
             cLog: getCLog(id),
-            boxes: getCLogBoxes(id)
+            boxes: getCLogBoxes(id),
         });
-    }
+    };
 
-    selectBox = boxIndex => {
+    selectBox = (boxIndex) => {
         const { boxes } = this.state;
         this.setState({ boxIndex, popOn: true, count: boxes[boxIndex].count });
-    }
+    };
 
-    registCount = count => {
+    registCount = (count) => {
         const { cLog, boxes, boxIndex } = this.state;
         const result = writeCount(count, boxes, boxIndex, cLog);
         this.setState({ ...result, boxIndex: -1, count: '', popOn: false });
-    }
-
+    };
 }
 
 Home.propTypes = {
-    history: PropTypes.object
+    history: PropTypes.object,
 };

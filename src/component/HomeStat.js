@@ -47,7 +47,9 @@ const StatCount = styled.div`
 
 export default function HomeStat(props) {
     const { cLog, updateLog, deleteLog } = props;
-    const leftDays = moment(cLog.end, 'YYYY.MM.DD').startOf('days').diff(moment(), 'days') + 1;
+    const leftDays =
+        moment(cLog.end, 'YYYY.MM.DD').startOf('days').diff(moment(), 'days') +
+        1;
     const progress = Math.round((cLog.count / cLog.total) * 100);
 
     return (
@@ -57,8 +59,12 @@ export default function HomeStat(props) {
                 <Button onClick={() => updateLog()}>Update</Button>
                 <Button onClick={() => deleteLog()}>Delete</Button>
             </Wrap>
-            <StatDays>{cLog.start} ~ {cLog.end} ({leftDays}일 남음)</StatDays>
-            <StatCount>{cLog.count || 0} / {cLog.total} ({progress}% 달성)</StatCount>
+            <StatDays>
+                {cLog.start} ~ {cLog.end} ({leftDays}일 남음)
+            </StatDays>
+            <StatCount>
+                {cLog.count || 0} / {cLog.total} ({progress}% 달성)
+            </StatCount>
         </Stat>
     );
 }
@@ -66,5 +72,5 @@ export default function HomeStat(props) {
 HomeStat.propTypes = {
     cLog: PropTypes.object,
     updateLog: PropTypes.func,
-    deleteLog: PropTypes.func
+    deleteLog: PropTypes.func,
 };

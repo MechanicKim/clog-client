@@ -11,7 +11,7 @@ const Wrap = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.7)
+    background-color: rgba(0, 0, 0, 0.7);
 `;
 
 const Popup = styled.div`
@@ -54,12 +54,11 @@ const Button = styled.button`
 `;
 
 export default class HomePopup extends React.Component {
-
     constructor(props) {
         super(props);
 
         this.state = {
-            count: this.props.count
+            count: this.props.count,
         };
     }
 
@@ -70,22 +69,25 @@ export default class HomePopup extends React.Component {
             <Wrap>
                 <Popup>
                     <Title>횟수를 입력하세요.</Title>
-                    <Input value={count} onChange={this.onChangeCount} type="number" />
+                    <Input
+                        value={count}
+                        onChange={this.onChangeCount}
+                        type="number"
+                    />
                     <Button onClick={() => regist(count)}>확인</Button>
                 </Popup>
             </Wrap>
         );
     }
 
-    onChangeCount = e => {
+    onChangeCount = (e) => {
         this.setState({
-            count: e.target.value
+            count: e.target.value,
         });
-    }
-
+    };
 }
 
 HomePopup.propTypes = {
     count: PropTypes.string,
-    regist: PropTypes.func
+    regist: PropTypes.func,
 };

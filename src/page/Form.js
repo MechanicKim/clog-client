@@ -65,7 +65,6 @@ const Button = styled.button`
 `;
 
 export default class CLogForm extends React.Component {
-
     constructor(props) {
         super(props);
 
@@ -77,7 +76,7 @@ export default class CLogForm extends React.Component {
                 desc: cLog.desc,
                 days: cLog.days,
                 total: cLog.total,
-                update: true
+                update: true,
             };
         } else {
             this.state = {
@@ -85,7 +84,7 @@ export default class CLogForm extends React.Component {
                 desc: '',
                 days: '',
                 total: '',
-                update: false
+                update: false,
             };
         }
     }
@@ -96,25 +95,60 @@ export default class CLogForm extends React.Component {
         return (
             <Page>
                 <Form>
-                    <Input type="text" name="title" value={title} onChange={this.onChange} placeholder="제목" />
-                    <Textarea type="text" name="desc" value={desc} onChange={this.onChange} rows="5" placeholder="간단한 설명"></Textarea>
-                    <Input type="number" name="days" value={days} onChange={this.onChange} placeholder="챌린지 일수(최대 30일)" disabled={update} />
-                    <Input type="number" name="total" value={total} onChange={this.onChange} placeholder="챌린지 횟수" disabled={update} />
+                    <Input
+                        type="text"
+                        name="title"
+                        value={title}
+                        onChange={this.onChange}
+                        placeholder="제목"
+                    />
+                    <Textarea
+                        type="text"
+                        name="desc"
+                        value={desc}
+                        onChange={this.onChange}
+                        rows="5"
+                        placeholder="간단한 설명"
+                    ></Textarea>
+                    <Input
+                        type="number"
+                        name="days"
+                        value={days}
+                        onChange={this.onChange}
+                        placeholder="챌린지 일수(최대 30일)"
+                        disabled={update}
+                    />
+                    <Input
+                        type="number"
+                        name="total"
+                        value={total}
+                        onChange={this.onChange}
+                        placeholder="챌린지 횟수"
+                        disabled={update}
+                    />
                     <Group>
-                        <Button onClick={() => this.props.history.goBack()}>취소</Button>
-                        {!update && <Button onClick={() => this.createChallenge()}>도전!</Button>}
-                        {update && <Button onClick={() => this.updateChallenge()}>수정</Button>}
+                        <Button onClick={() => this.props.history.goBack()}>
+                            취소
+                        </Button>
+                        {!update && (
+                            <Button onClick={() => this.createChallenge()}>
+                                도전!
+                            </Button>
+                        )}
+                        {update && (
+                            <Button onClick={() => this.updateChallenge()}>
+                                수정
+                            </Button>
+                        )}
                     </Group>
                 </Form>
             </Page>
         );
     }
 
-    onChange = e => {
-        this.setState({
-            [e.target.name]: e.target.value
-        });
-    }
+    onChange = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
+    };
 
     validateForm = () => {
         const { title, desc, days, total } = this.state;
@@ -145,7 +179,7 @@ export default class CLogForm extends React.Component {
         }
 
         return true;
-    }
+    };
 
     createChallenge = () => {
         if (!this.validateForm()) return;
@@ -153,7 +187,7 @@ export default class CLogForm extends React.Component {
         const { title, desc, days, total } = this.state;
         createCLog(title, desc, days, total);
         this.props.history.goBack();
-    }
+    };
 
     updateChallenge = () => {
         if (!this.validateForm()) return;
@@ -161,11 +195,10 @@ export default class CLogForm extends React.Component {
         const { title, desc } = this.state;
         updateCLog(this.props.match.params.id, title, desc);
         this.props.history.goBack();
-    }
-
+    };
 }
 
 CLogForm.propTypes = {
     match: PropTypes.object,
-    history: PropTypes.object
+    history: PropTypes.object,
 };
