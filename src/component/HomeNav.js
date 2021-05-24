@@ -4,12 +4,7 @@ import styled from 'styled-components';
 import { getCLog } from '../util/Storage';
 
 const Nav = styled.nav`
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    border-right: 2px solid #eeeeee;
-    resize: horizontal;
-    overflow: auto;
+    border-bottom: 2px solid #eeeeee;
 `;
 
 const Button = styled.button`

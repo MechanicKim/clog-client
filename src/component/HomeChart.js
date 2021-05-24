@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Bar } from 'react-chartjs-2';
 
-const Chart = styled.article``;
+const Chart = styled.article`
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 10px;
+    padding: 0 10px;
+`;
 
 export default function HomeChart(props) {
     const { boxes } = props;

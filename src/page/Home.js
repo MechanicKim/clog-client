@@ -18,29 +18,30 @@ import HomeChart from '../component/HomeChart';
 import HomeEmpty from '../component/HomeEmpty';
 import HomePopup from '../component/HomePopup';
 
-const Page = styled.div`
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-`;
-
-const Body = styled.div`
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-`;
+const Page = styled.div``;
 
 const Section = styled.section`
-    flex: 1;
+    text-align: center;
 `;
 
 const Wrap = styled.article`
-    display: inline-block;
-    padding: 0 15px;
+    margin-top: 20px;
+`;
+
+const Group = styled.article`
+    margin-top: 50px;
+`;
+
+const Button = styled.button`
+    font-size: 17px;
+    color: #bdbdbd;
+    border-style: none;
+    background-color: transparent;
+
+    &:hover {
+        color: #212121;
+        cursor: pointer;
+    }
 `;
 
 export default class Home extends React.Component {
@@ -81,7 +82,7 @@ export default class Home extends React.Component {
             <Page>
                 <HomeHeader />
                 {cLogKeys.length > 0 && (
-                    <Body>
+                    <>
                         <HomeNav
                             cLogKeys={cLogKeys}
                             cLog={cLog}
@@ -101,8 +102,16 @@ export default class Home extends React.Component {
                                 />
                                 <HomeChart boxes={boxes} />
                             </Wrap>
+                            <Group>
+                                <Button onClick={() => this.updateLog()}>
+                                    수정
+                                </Button>
+                                <Button onClick={() => this.deleteLog()}>
+                                    삭제
+                                </Button>
+                            </Group>
                         </Section>
-                    </Body>
+                    </>
                 )}
                 {cLogKeys.length === 0 && <HomeEmpty />}
                 {popOn && <HomePopup count={count} regist={this.registCount} />}

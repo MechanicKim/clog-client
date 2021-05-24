@@ -6,7 +6,7 @@ const Box = styled.div`
     width: 70px;
     height: 70px;
     padding: 10px;
-    margin: 0 5px;
+    margin: 5px;
     display: inline-flex;
     flex-direction: column;
     border: 1px solid #eeeeee;

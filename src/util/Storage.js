@@ -30,26 +30,28 @@ export function createCLog(title, desc, days, total) {
     const id = moment().locale('ko').format('YYYYMMDDHHmmss');
     const start = moment().locale('ko').startOf('days');
     const end = moment(start).add(parseInt(days), 'days');
-    
+
     let cLogs = get('cLogs');
     if (!cLogs) cLogs = [];
     cLogs.push(id);
     set('cLogs', cLogs);
 
     set(id, {
-        id, title, desc,
+        id,
+        title,
+        desc,
         days: parseInt(days),
         start: start.format('YYYY.MM.DD'),
         end: end.format('YYYY.MM.DD'),
         total: parseInt(total),
-        count: 0
+        count: 0,
     });
 
     let dayBoxes = [];
     for (let d = 0; d < days; d++) {
         dayBoxes.push({
             date: moment(start).add(d, 'days').format('M월 D일'),
-            count: 0
+            count: 0,
         });
     }
     set(`boxes-${id}`, dayBoxes);
@@ -67,7 +69,7 @@ export function writeCount(count, boxes, boxIndex, cLog) {
     set(`boxes-${cLog.id}`, boxes);
 
     let totalCount = 0;
-    boxes.forEach(box => {
+    boxes.forEach((box) => {
         totalCount += box.count;
     });
     cLog.count = totalCount;
@@ -75,12 +77,12 @@ export function writeCount(count, boxes, boxIndex, cLog) {
 
     return {
         cLog,
-        boxes
+        boxes,
     };
 }
 
 export function deleteCLog(cLogKeys, cLog) {
-    const keys = cLogKeys.filter(key => key !== cLog.id);
+    const keys = cLogKeys.filter((key) => key !== cLog.id);
     set('cLogs', keys);
     remove(`boxes-${cLog.id}`);
     remove(cLog.id);
@@ -90,13 +92,13 @@ export function deleteCLog(cLogKeys, cLog) {
         return {
             cLogKeys: [],
             cLog: {},
-            boxes: []
+            boxes: [],
         };
     } else {
         return {
             cLogKeys: keys,
             cLog: getCLog(keys[0]),
-            boxes: getCLogBoxes(keys[0])
+            boxes: getCLogBoxes(keys[0]),
         };
     }
 }

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 
 const Stat = styled.article`
-    margin-bottom: 10px;
+    width: 100%;
     line-height: 150%;
 `;
 
@@ -12,41 +12,26 @@ const Wrap = styled.div`
     padding: 30px 15px;
     display: flex;
     flex-direction: row;
-    background-color: #263238;
 `;
 
 const Desc = styled.span`
     flex: 1;
     font-size: 30px;
-    color: #ffffff;
-`;
-
-const Button = styled.button`
-    font-size: 17px;
-    color: #bdbdbd;
-    border-style: none;
-    background-color: transparent;
-
-    &:hover {
-        color: #ffffff;
-        cursor: pointer;
-    }
+    color: #212121;
 `;
 
 const StatDays = styled.div`
     padding: 10px 15px 0 15px;
     color: #212121;
-    background-color: #eceff1;
 `;
 
 const StatCount = styled.div`
     padding: 10px 15px;
     color: #212121;
-    background-color: #eceff1;
 `;
 
 export default function HomeStat(props) {
-    const { cLog, updateLog, deleteLog } = props;
+    const { cLog } = props;
     const leftDays =
         moment(cLog.end, 'YYYY.MM.DD').startOf('days').diff(moment(), 'days') +
         1;
@@ -56,8 +41,6 @@ export default function HomeStat(props) {
         <Stat>
             <Wrap>
                 <Desc>{cLog.desc}</Desc>
-                <Button onClick={() => updateLog()}>Update</Button>
-                <Button onClick={() => deleteLog()}>Delete</Button>
             </Wrap>
             <StatDays>
                 {cLog.start} ~ {cLog.end} ({leftDays}일 남음)

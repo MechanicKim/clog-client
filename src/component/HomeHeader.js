@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const Header = styled.header`
-    width: 100%;
     padding: 15px 10px;
     display: flex;
     flex-direction: row;
