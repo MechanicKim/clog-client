@@ -10,7 +10,7 @@ const Header = styled.header`
     background-color: #212121;
 `;
 
-const Title = styled.h2`
+const Title = styled.h3`
     margin: 0;
     color: #ffffff;
 `;

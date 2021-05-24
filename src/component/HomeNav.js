@@ -4,18 +4,18 @@ import styled from 'styled-components';
 import { getCLog } from '../util/Storage';
 
 const Nav = styled.nav`
-    border-bottom: 2px solid #eeeeee;
+    width: 100%;
+    text-align: center;
 `;
 
-const Button = styled.button`
-    padding: 15px;
-    color: ${(props) => (props.selected ? '#212121' : '#757575')};
-    border-style: none;
-    text-align: left;
-    background-color: ${(props) => (props.selected ? '#eeeeee' : '#ffffff')};
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+const List = styled.ul`
+    padding: 0;
+    margin: 0;
+`;
+
+const ListItem = styled.li`
+    padding: 20px 0;
+    list-style: none;
 
     &:hover {
         background-color: #eeeeee;
@@ -23,29 +23,31 @@ const Button = styled.button`
     }
 `;
 
+const Button = styled.a`
+    color: #212121;
+    text-decoration: none;
+`;
+
 export default function HomeNav(props) {
-    const { cLogKeys, cLog, select } = props;
+    const { cLogKeys, select } = props;
 
     return (
         <Nav>
-            {cLogKeys.map((key) => {
-                const log = getCLog(key);
-                return (
-                    <Button
-                        key={log.id}
-                        selected={log.id === cLog.id}
-                        onClick={() => select(log.id)}
-                    >
-                        {log.title}
-                    </Button>
-                );
-            })}
+            <List>
+                {cLogKeys.map((key) => {
+                    const log = getCLog(key);
+                    return (
+                        <ListItem key={log.id} onClick={() => select(log.id)}>
+                            <Button>{log.title}</Button>
+                        </ListItem>
+                    );
+                })}
+            </List>
         </Nav>
     );
 }
 
 HomeNav.propTypes = {
     cLogKeys: PropTypes.arrayOf(PropTypes.string),
-    cLog: PropTypes.object,
     select: PropTypes.func,
 };

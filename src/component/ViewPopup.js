@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Wrap = styled.div`
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     bottom: 0;

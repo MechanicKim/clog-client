@@ -50,7 +50,7 @@ export function createCLog(title, desc, days, total) {
     let dayBoxes = [];
     for (let d = 0; d < days; d++) {
         dayBoxes.push({
-            date: moment(start).add(d, 'days').format('M월 D일'),
+            date: moment(start).add(d, 'days').format('M/D'),
             count: 0,
         });
     }
@@ -81,24 +81,10 @@ export function writeCount(count, boxes, boxIndex, cLog) {
     };
 }
 
-export function deleteCLog(cLogKeys, cLog) {
+export function deleteCLog(cLog) {
+    const cLogKeys = getCLogKeys();
     const keys = cLogKeys.filter((key) => key !== cLog.id);
     set('cLogs', keys);
     remove(`boxes-${cLog.id}`);
     remove(cLog.id);
-
-    if (keys.length === 0) {
-        remove('cLogs');
-        return {
-            cLogKeys: [],
-            cLog: {},
-            boxes: [],
-        };
-    } else {
-        return {
-            cLogKeys: keys,
-            cLog: getCLog(keys[0]),
-            boxes: getCLogBoxes(keys[0]),
-        };
-    }
 }

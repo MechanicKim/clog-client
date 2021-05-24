@@ -9,14 +9,13 @@ const Stat = styled.article`
 `;
 
 const Wrap = styled.div`
-    padding: 30px 15px;
-    display: flex;
-    flex-direction: row;
+    padding: 25px 15px;
 `;
 
-const Desc = styled.span`
+const Desc = styled.div`
     flex: 1;
-    font-size: 30px;
+    font-size: 25px;
+    line-height: 150%;
     color: #212121;
 `;
 
@@ -40,6 +39,7 @@ export default function HomeStat(props) {
     return (
         <Stat>
             <Wrap>
+                <Desc>{cLog.title}</Desc>
                 <Desc>{cLog.desc}</Desc>
             </Wrap>
             <StatDays>

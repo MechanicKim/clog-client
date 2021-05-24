@@ -2,10 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Empty = styled.div`
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin-top: 25%;
     text-align: center;
     line-height: 150%;
 `;
