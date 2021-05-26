@@ -68,24 +68,30 @@ export default class CLogForm extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            title: '',
+            desc: '',
+            days: '',
+            total: '',
+            update: false,
+        };
+    }
+
+    async componentDidMount() {
         const cLogId = this.props.match.params.id;
-        if (cLogId) {
-            const cLog = getCLog(cLogId);
-            this.state = {
-                title: cLog.title,
-                desc: cLog.desc,
-                days: cLog.days,
-                total: cLog.total,
+        if (!cLogId) return;
+
+        try {
+            this.cLog = await getCLog(cLogId);
+            this.setState({
+                title: this.cLog.title,
+                desc: this.cLog.desc,
+                days: this.cLog.days,
+                total: this.cLog.total,
                 update: true,
-            };
-        } else {
-            this.state = {
-                title: '',
-                desc: '',
-                days: '',
-                total: '',
-                update: false,
-            };
+            });
+        } catch (err) {
+            console.error(err);
         }
     }
 
@@ -193,12 +199,20 @@ export default class CLogForm extends React.Component {
         }
     };
 
-    updateChallenge = () => {
+    updateChallenge = async () => {
         if (!this.validateForm()) return;
 
         const { title, desc } = this.state;
-        updateCLog(this.props.match.params.id, title, desc);
-        this.props.history.goBack();
+
+        this.cLog.title = title;
+        this.cLog.desc = desc;
+
+        try {
+            await updateCLog(this.cLog);
+            this.props.history.goBack();
+        } catch (err) {
+            console.error(err);
+        }
     };
 }
 
