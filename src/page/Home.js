@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { getCLogs } from '../util/Storage';
+import { getCLogs } from '../util/Api';
 
 import Header from '../component/Header';
 import HomeNav from '../component/HomeNav';

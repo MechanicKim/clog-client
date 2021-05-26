@@ -2,12 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
-import {
-    getCLog,
-    getCLogDays,
-    updateCLogDay,
-    deleteCLog,
-} from '../util/Storage';
+import { getCLog, getCLogDays, updateCLogDay, deleteCLog } from '../util/Api';
 
 import Header from '../component/Header';
 import Stat from '../component/ViewStat';

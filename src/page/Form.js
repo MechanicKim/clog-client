@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { createCLog, updateCLog, getCLog } from '../util/Storage';
+import { createCLog, updateCLog, getCLog } from '../util/Api';
 
 const Page = styled.div`
     position: absolute;
