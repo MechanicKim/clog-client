@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { getCLog } from '../util/Storage';
 
 const Nav = styled.nav`
     width: 100%;
@@ -29,16 +28,15 @@ const Button = styled.a`
 `;
 
 export default function HomeNav(props) {
-    const { cLogKeys, select } = props;
+    const { cLogs, select } = props;
 
     return (
         <Nav>
             <List>
-                {cLogKeys.map((key) => {
-                    const log = getCLog(key);
+                {cLogs.map((cLog) => {
                     return (
-                        <ListItem key={log.id} onClick={() => select(log.id)}>
-                            <Button>{log.title}</Button>
+                        <ListItem key={cLog.id} onClick={() => select(cLog.id)}>
+                            <Button>{cLog.title}</Button>
                         </ListItem>
                     );
                 })}
@@ -48,6 +46,6 @@ export default function HomeNav(props) {
 }
 
 HomeNav.propTypes = {
-    cLogKeys: PropTypes.arrayOf(PropTypes.string),
+    cLogs: PropTypes.arrayOf(PropTypes.object),
     select: PropTypes.func,
 };

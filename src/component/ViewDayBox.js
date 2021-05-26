@@ -34,12 +34,12 @@ const Count = styled.span`
     color: #212121;
 `;
 
-export default function HomeDayBox(props) {
-    const { boxes, dayNum, select } = props;
+export default function ViewDayBox(props) {
+    const { cLogDays, dayNum, select } = props;
 
     return (
         <>
-            {boxes.map((box, i) => (
+            {cLogDays.map((box, i) => (
                 <Box key={i} passed={i < dayNum} onClick={() => select(i)}>
                     <Day>{box.date}</Day>
                     <Count>{box.count}</Count>
@@ -49,8 +49,8 @@ export default function HomeDayBox(props) {
     );
 }
 
-HomeDayBox.propTypes = {
-    boxes: PropTypes.arrayOf(PropTypes.object),
+ViewDayBox.propTypes = {
+    cLogDays: PropTypes.arrayOf(PropTypes.object),
     dayNum: PropTypes.number,
     select: PropTypes.func,
 };

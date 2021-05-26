@@ -11,20 +11,20 @@ const Chart = styled.article`
 `;
 
 export default function HomeChart(props) {
-    const { boxes } = props;
+    const { cLogDays } = props;
 
     return (
         <Chart>
             <Bar
                 data={{
-                    labels: boxes.map((b) => {
+                    labels: cLogDays.map((b) => {
                         return `${b.date}`;
                     }),
                     datasets: [
                         {
                             label: '실천 횟수',
                             borderWidth: 1,
-                            data: boxes.map((b) => b.count),
+                            data: cLogDays.map((b) => b.count),
                             backgroundColor: 'rgba(54, 162, 235, 0.2)',
                         },
                     ],
@@ -43,5 +43,5 @@ export default function HomeChart(props) {
 }
 
 HomeChart.propTypes = {
-    boxes: PropTypes.arrayOf(PropTypes.object),
+    cLogDays: PropTypes.arrayOf(PropTypes.object),
 };

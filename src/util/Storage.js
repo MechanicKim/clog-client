@@ -1,90 +1,89 @@
 import * as moment from 'moment';
 
-function set(key, data) {
-    localStorage.setItem(key, JSON.stringify(data));
+const API_URL = 'http://localhost:5000/api/v1';
+
+export async function getCLogs() {
+    const response = await fetch(`${API_URL}/cLogs`);
+    return (await response.json()).result;
 }
 
-function get(key) {
-    const value = localStorage.getItem(key);
-    if (!value) return null;
-    else return JSON.parse(value);
+export async function getCLog(key) {
+    const response = await fetch(`${API_URL}/cLog/${key}`);
+    return (await response.json()).result;
 }
 
-function remove(key) {
-    localStorage.removeItem(key);
+export async function getCLogDays(key) {
+    const response = await fetch(`${API_URL}/cLogDays/${key}`);
+    return (await response.json()).result;
 }
 
-export function getCLogKeys() {
-    return get('cLogs');
-}
-
-export function getCLog(key) {
-    return get(key);
-}
-
-export function getCLogBoxes(key) {
-    return get(`boxes-${key}`);
-}
-
-export function createCLog(title, desc, days, total) {
-    const id = moment().locale('ko').format('YYYYMMDDHHmmss');
+export async function createCLog(title, desc, days, total) {
     const start = moment().locale('ko').startOf('days');
-    const end = moment(start).add(parseInt(days), 'days');
+    const end = moment(start).add(days, 'days');
 
-    let cLogs = get('cLogs');
-    if (!cLogs) cLogs = [];
-    cLogs.push(id);
-    set('cLogs', cLogs);
-
-    set(id, {
-        id,
-        title,
-        desc,
-        days: parseInt(days),
-        start: start.format('YYYY.MM.DD'),
-        end: end.format('YYYY.MM.DD'),
-        total: parseInt(total),
-        count: 0,
+    let response = await fetch(`${API_URL}/cLog`, {
+        method: 'POST',
+        body: JSON.stringify({
+            title,
+            desc,
+            days: days,
+            start: start.format('YYYY.MM.DD'),
+            end: end.format('YYYY.MM.DD'),
+            total: total,
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+        },
     });
+    const cLog = (await response.json()).result;
 
-    let dayBoxes = [];
+    let cLogDays = [];
     for (let d = 0; d < days; d++) {
-        dayBoxes.push({
+        cLogDays.push({
+            cLogId: cLog.id,
             date: moment(start).add(d, 'days').format('M/D'),
             count: 0,
         });
     }
-    set(`boxes-${id}`, dayBoxes);
-}
-
-export function updateCLog(id, title, desc) {
-    let cLog = get(id);
-    cLog.title = title;
-    cLog.desc = desc;
-    set(id, cLog);
-}
-
-export function writeCount(count, boxes, boxIndex, cLog) {
-    boxes[boxIndex].count = parseInt(count || '0');
-    set(`boxes-${cLog.id}`, boxes);
-
-    let totalCount = 0;
-    boxes.forEach((box) => {
-        totalCount += box.count;
+    response = await fetch(`${API_URL}/cLogDays`, {
+        method: 'POST',
+        body: JSON.stringify(cLogDays),
+        headers: {
+            'Content-Type': 'application/json',
+        },
     });
-    cLog.count = totalCount;
-    set(cLog.id, cLog);
 
-    return {
-        cLog,
-        boxes,
-    };
+    return (await response.json()).result;
 }
 
-export function deleteCLog(cLog) {
-    const cLogKeys = getCLogKeys();
-    const keys = cLogKeys.filter((key) => key !== cLog.id);
-    set('cLogs', keys);
-    remove(`boxes-${cLog.id}`);
-    remove(cLog.id);
+export async function updateCLog(cLog) {
+    let response = await fetch(`${API_URL}/cLog`, {
+        method: 'PUT',
+        body: JSON.stringify(cLog),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    return (await response.json()).result;
+}
+
+export async function updateCLogDay(cLogDay) {
+    let response = await fetch(`${API_URL}/cLogDay`, {
+        method: 'PUT',
+        body: JSON.stringify(cLogDay),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    return (await response.json()).result;
+}
+
+export async function deleteCLog(id) {
+    let response = await fetch(`${API_URL}/cLog/${id}`, {
+        method: 'DELETE',
+    });
+
+    return (await response.json()).result;
 }

@@ -2,7 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
-import { getCLog, getCLogBoxes, writeCount, deleteCLog } from '../util/Storage';
+import {
+    getCLog,
+    getCLogDays,
+    updateCLogDay,
+    deleteCLog,
+} from '../util/Storage';
 
 import Header from '../component/Header';
 import Stat from '../component/ViewStat';
@@ -40,18 +45,37 @@ export default class Home extends React.Component {
     constructor(props) {
         super(props);
 
-        const { id } = this.props.match.params;
         this.state = {
-            cLog: getCLog(id),
-            boxes: getCLogBoxes(id),
-            boxIndex: -1,
+            cLog: {},
+            cLogDays: [],
+            cLogDayIndex: -1,
             popOn: false,
             count: '',
         };
     }
 
+    async componentDidMount() {
+        const { id } = this.props.match.params;
+
+        try {
+            let cLog = await getCLog(id);
+            const cLogDays = await getCLogDays(id);
+            cLog.count = 0;
+            cLogDays.forEach((box) => {
+                cLog.count += box.count;
+            });
+
+            this.setState({
+                cLog,
+                cLogDays,
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     render() {
-        const { cLog, boxes, popOn, count } = this.state;
+        const { cLog, cLogDays, popOn, count } = this.state;
         const dayNum = moment().diff(
             moment(cLog.start, 'YYYY.MM.DD').startOf('days'),
             'days',
@@ -68,13 +92,16 @@ export default class Home extends React.Component {
                     />
                     <Wrap>
                         <DayBox
-                            boxes={boxes}
+                            cLogDays={cLogDays}
                             dayNum={dayNum}
                             select={this.selectBox}
                         />
-                        <Chart boxes={boxes} />
+                        <Chart cLogDays={cLogDays} />
                     </Wrap>
                     <Group>
+                        <Button onClick={() => this.props.history.goBack()}>
+                            목록
+                        </Button>
                         <Button onClick={() => this.updateLog()}>수정</Button>
                         <Button onClick={() => this.deleteLog()}>삭제</Button>
                     </Group>
@@ -89,38 +116,41 @@ export default class Home extends React.Component {
         this.props.history.push(`/form/${cLog.id}`);
     };
 
-    deleteLog = () => {
+    deleteLog = async () => {
         const confirmed = window.confirm(
             '해당 챌린지의 모든 기록이 삭제됩니다. 삭제할까요?',
         );
         if (confirmed) {
             const { cLog } = this.state;
-            deleteCLog(cLog);
+            alert(await deleteCLog(cLog.id));
             this.props.history.goBack();
-            alert('삭제했습니다.');
         }
     };
 
-    selectCLog = (id) => {
+    selectBox = (cLogDayIndex) => {
+        const { cLogDays } = this.state;
         this.setState({
-            cLog: getCLog(id),
-            boxes: getCLogBoxes(id),
-        });
-    };
-
-    selectBox = (boxIndex) => {
-        const { boxes } = this.state;
-        this.setState({
-            boxIndex,
+            cLogDayIndex,
             popOn: true,
-            count: String(boxes[boxIndex].count),
+            count: String(cLogDays[cLogDayIndex].count),
         });
     };
 
     registCount = (count) => {
-        const { cLog, boxes, boxIndex } = this.state;
-        const result = writeCount(count, boxes, boxIndex, cLog);
-        this.setState({ ...result, boxIndex: -1, count: '', popOn: false });
+        const { cLogDays, cLogDayIndex } = this.state;
+        cLogDays[cLogDayIndex].count = +count;
+
+        try {
+            updateCLogDay(cLogDays[cLogDayIndex]);
+            this.setState({
+                cLogDays,
+                cLogDayIndex: -1,
+                count: '',
+                popOn: false,
+            });
+        } catch (err) {
+            console.error(err);
+        }
     };
 }
 

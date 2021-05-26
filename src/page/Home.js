@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { getCLogKeys } from '../util/Storage';
+import { getCLogs } from '../util/Storage';
 
 import Header from '../component/Header';
 import HomeNav from '../component/HomeNav';
@@ -13,29 +13,31 @@ export default class Home extends React.Component {
     constructor(props) {
         super(props);
 
-        const cLogKeys = getCLogKeys();
+        this.state = {
+            cLogs: [],
+        };
+    }
 
-        if (!cLogKeys) {
-            this.state = {
-                cLogKeys: [],
-            };
-        } else {
-            this.state = {
-                cLogKeys,
-            };
+    async componentDidMount() {
+        try {
+            this.setState({
+                cLogs: await getCLogs(),
+            });
+        } catch (err) {
+            console.error(err);
         }
     }
 
     render() {
-        const { cLogKeys } = this.state;
+        const { cLogs } = this.state;
 
         return (
             <Page>
                 <Header />
-                {cLogKeys.length > 0 && (
-                    <HomeNav cLogKeys={cLogKeys} select={this.selectCLog} />
+                {cLogs.length > 0 && (
+                    <HomeNav cLogs={cLogs} select={this.selectCLog} />
                 )}
-                {cLogKeys.length === 0 && <HomeEmpty />}
+                {cLogs.length === 0 && <HomeEmpty />}
             </Page>
         );
     }

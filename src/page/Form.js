@@ -181,12 +181,16 @@ export default class CLogForm extends React.Component {
         return true;
     };
 
-    createChallenge = () => {
+    createChallenge = async () => {
         if (!this.validateForm()) return;
 
-        const { title, desc, days, total } = this.state;
-        createCLog(title, desc, days, total);
-        this.props.history.goBack();
+        try {
+            const { title, desc, days, total } = this.state;
+            await createCLog(title, desc, +days, +total);
+            this.props.history.goBack();
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     updateChallenge = () => {
