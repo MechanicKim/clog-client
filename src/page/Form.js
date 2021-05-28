@@ -122,7 +122,7 @@ export default class CLogForm extends React.Component {
                         value={days}
                         onChange={this.onChange}
                         placeholder="챌린지 일수(최대 30일)"
-                        disabled={update}
+                        readOnly={update}
                     />
                     <Input
                         type="number"
@@ -130,7 +130,7 @@ export default class CLogForm extends React.Component {
                         value={total}
                         onChange={this.onChange}
                         placeholder="챌린지 횟수"
-                        disabled={update}
+                        readOnly={update}
                     />
                     <Group>
                         <Button onClick={() => this.props.history.goBack()}>
