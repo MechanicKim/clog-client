@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
 
@@ -29,8 +28,11 @@ const StatCount = styled.div`
     color: #212121;
 `;
 
-export default function HomeStat(props) {
-    const { cLog } = props;
+type StatProps = {
+    cLog: any;
+};
+
+export default function HomeStat({ cLog }: StatProps) {
     const leftDays =
         moment(cLog.end, 'YYYY.MM.DD').startOf('days').diff(moment(), 'days') +
         1;
@@ -51,9 +53,3 @@ export default function HomeStat(props) {
         </Stat>
     );
 }
-
-HomeStat.propTypes = {
-    cLog: PropTypes.object,
-    updateLog: PropTypes.func,
-    deleteLog: PropTypes.func,
-};

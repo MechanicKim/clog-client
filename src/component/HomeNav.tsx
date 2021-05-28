@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Nav = styled.nav`
@@ -27,13 +26,16 @@ const Button = styled.a`
     text-decoration: none;
 `;
 
-export default function HomeNav(props) {
-    const { cLogs, select } = props;
+type NavProps = {
+    cLogs: Array<any>;
+    select: Function;
+};
 
+export default function HomeNav({ cLogs, select }: NavProps) {
     return (
         <Nav>
             <List>
-                {cLogs.map((cLog) => {
+                {cLogs.map((cLog: any) => {
                     return (
                         <ListItem key={cLog.id} onClick={() => select(cLog.id)}>
                             <Button>{cLog.title}</Button>
@@ -44,8 +46,3 @@ export default function HomeNav(props) {
         </Nav>
     );
 }
-
-HomeNav.propTypes = {
-    cLogs: PropTypes.arrayOf(PropTypes.object),
-    select: PropTypes.func,
-};

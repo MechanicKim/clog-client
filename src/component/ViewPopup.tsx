@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Wrap = styled.div`
@@ -53,14 +52,19 @@ const Button = styled.button`
     }
 `;
 
-export default class HomePopup extends React.Component {
-    constructor(props) {
-        super(props);
+type PopupProps = {
+    count: string;
+    regist: Function;
+};
 
-        this.state = {
-            count: this.props.count,
-        };
-    }
+type PopupState = {
+    count: string;
+};
+
+export default class HomePopup extends React.Component<PopupProps, PopupState> {
+    state: PopupState = {
+        count: this.props.count,
+    };
 
     render() {
         const { count } = this.state;
@@ -80,14 +84,9 @@ export default class HomePopup extends React.Component {
         );
     }
 
-    onChangeCount = (e) => {
+    onChangeCount = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({
             count: e.target.value,
         });
     };
 }
-
-HomePopup.propTypes = {
-    count: PropTypes.string,
-    regist: PropTypes.func,
-};

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Box = styled.div`
@@ -11,7 +10,8 @@ const Box = styled.div`
     flex-direction: column;
     border: 1px solid #eeeeee;
     border-radius: 35px;
-    background-color: ${(props) => (props.passed ? '#9e9e9e' : '#ffffff')};
+    background-color: ${({ passed }: BoxProps) =>
+        passed ? '#9e9e9e' : '#ffffff'};
 
     &:hover {
         background-color: #eeeeee;
@@ -34,9 +34,17 @@ const Count = styled.span`
     color: #212121;
 `;
 
-export default function ViewDayBox(props) {
-    const { cLogDays, dayNum, select } = props;
+type DayProps = {
+    cLogDays: Array<any>;
+    dayNum: number;
+    select: Function;
+};
 
+type BoxProps = {
+    passed: Boolean;
+};
+
+export default function ViewDayBox({ cLogDays, dayNum, select }: DayProps) {
     return (
         <>
             {cLogDays.map((box, i) => (
@@ -48,9 +56,3 @@ export default function ViewDayBox(props) {
         </>
     );
 }
-
-ViewDayBox.propTypes = {
-    cLogDays: PropTypes.arrayOf(PropTypes.object),
-    dayNum: PropTypes.number,
-    select: PropTypes.func,
-};

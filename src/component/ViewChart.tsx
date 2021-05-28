@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Bar } from 'react-chartjs-2';
 
@@ -10,12 +9,15 @@ const Chart = styled.article`
     padding: 0 10px;
 `;
 
-export default function HomeChart(props) {
-    const { cLogDays } = props;
+type ChartProps = {
+    cLogDays: Array<any>;
+};
 
+export default function HomeChart({ cLogDays }: ChartProps) {
     return (
         <Chart>
             <Bar
+                type="bar"
                 data={{
                     labels: cLogDays.map((b) => {
                         return `${b.date}`;
@@ -41,7 +43,3 @@ export default function HomeChart(props) {
         </Chart>
     );
 }
-
-HomeChart.propTypes = {
-    cLogDays: PropTypes.arrayOf(PropTypes.object),
-};
