@@ -61,7 +61,7 @@ type PopupState = {
     count: string;
 };
 
-export default class HomePopup extends React.Component<PopupProps, PopupState> {
+export default class ViewPopup extends React.Component<PopupProps, PopupState> {
     state: PopupState = {
         count: this.props.count,
     };

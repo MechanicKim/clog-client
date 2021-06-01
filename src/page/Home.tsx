@@ -4,7 +4,7 @@ import { getCLogs } from '../util/Api';
 import { CLog } from '../type/CLogTypes';
 
 import Header from '../component/Header';
-import HomeNav from '../component/HomeNav';
+import HomeList from '../component/HomeList';
 import HomeEmpty from '../component/HomeEmpty';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -39,7 +39,7 @@ export default class Home extends React.Component<
             <Page>
                 <Header />
                 {cLogs.length > 0 && (
-                    <HomeNav cLogs={cLogs} select={this.selectCLog} />
+                    <HomeList cLogs={cLogs} select={this.selectCLog} />
                 )}
                 {cLogs.length === 0 && <HomeEmpty />}
             </Page>

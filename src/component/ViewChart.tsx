@@ -13,7 +13,7 @@ type ChartProps = {
     cLogDays: Array<any>;
 };
 
-export default function HomeChart({ cLogDays }: ChartProps) {
+export default function ViewChart({ cLogDays }: ChartProps) {
     return (
         <Chart>
             <Bar

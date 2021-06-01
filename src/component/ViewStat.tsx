@@ -32,7 +32,7 @@ type StatProps = {
     cLog: any;
 };
 
-export default function HomeStat({ cLog }: StatProps) {
+export default function ViewStat({ cLog }: StatProps) {
     const leftDays =
         moment(cLog.end, 'YYYY.MM.DD').startOf('days').diff(moment(), 'days') +
         1;
