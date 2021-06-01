@@ -1,47 +1,41 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { createCLog, updateCLog, getCLog } from '../util/Api';
 import { RouteComponentProps } from 'react-router-dom';
 
 const Page = styled.div`
+    padding-top: 100px;
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    display: flex;
-    flex-direction: column;
     background-color: #212121;
-    justify-content: center;
-    align-items: center;
 `;
 
 const Form = styled.div`
     width: 300px;
-    display: flex;
-    flex-direction: column;
+    margin: 0 auto;
+`;
+
+const inputStyle = css`
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-style: none;
+    border-radius: 3px;
+    outline: none;
+    box-sizing: border-box;
 `;
 
 const Input = styled.input`
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-style: none;
-    border-radius: 3px;
-    outline: none;
-    box-sizing: border-box;
+    ${inputStyle}
 `;
 
 const Textarea = styled.textarea`
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-style: none;
-    border-radius: 3px;
-    outline: none;
+    ${inputStyle}
     resize: none;
-    box-sizing: border-box;
 `;
 
 const Group = styled.div`
