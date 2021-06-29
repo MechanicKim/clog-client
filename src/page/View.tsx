@@ -79,6 +79,7 @@ export default class View extends React.Component<
 
     render() {
         const { cLog, cLogDays, popOn, count } = this.state;
+
         const dayNum = moment().diff(
             moment(cLog.start, 'YYYY.MM.DD').startOf('days'),
             'days',
@@ -136,8 +137,13 @@ export default class View extends React.Component<
     };
 
     registCount = (count: string) => {
-        const { cLogDays, cLogDayIndex } = this.state;
+        const { cLog, cLogDays, cLogDayIndex } = this.state;
         cLogDays[cLogDayIndex].count = +count;
+
+        cLog.count = 0;
+        cLogDays.forEach((day: CLogDay) => {
+            cLog.count += day.count;
+        });
 
         try {
             updateCLogDay(cLogDays[cLogDayIndex]);
