@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { getCLogs } from '../util/Api';
-import { CLog } from '../type/CLogTypes';
 
 import Header from '../component/Header';
 import HomeList from '../component/HomeList';
@@ -10,43 +9,26 @@ import { RouteComponentProps } from 'react-router-dom';
 
 const Page = styled.div``;
 
-type HomeState = {
-    cLogs: Array<CLog>;
-};
+export default function Home({ history }: RouteComponentProps) {
+    const [cLogs, setCLogs] = useState([]);
 
-export default class Home extends React.Component<
-    RouteComponentProps<{}>,
-    HomeState
-> {
-    state: HomeState = {
-        cLogs: [],
+    useEffect(() => {
+        requestCLogs();
+    }, []);
+
+    const requestCLogs = async () => {
+        setCLogs(await getCLogs());
     };
 
-    async componentDidMount() {
-        try {
-            this.setState({
-                cLogs: await getCLogs(),
-            });
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
-    render() {
-        const { cLogs } = this.state;
-
-        return (
-            <Page>
-                <Header />
-                {cLogs.length > 0 && (
-                    <HomeList cLogs={cLogs} select={this.selectCLog} />
-                )}
-                {cLogs.length === 0 && <HomeEmpty />}
-            </Page>
-        );
-    }
-
-    selectCLog = (id: string) => {
-        this.props.history.push(`/view/${id}`);
+    const viewCLog = (id: string) => {
+        history.push(`/view/${id}`);
     };
+
+    return (
+        <Page>
+            <Header />
+            {cLogs.length > 0 && <HomeList cLogs={cLogs} select={viewCLog} />}
+            {cLogs.length === 0 && <HomeEmpty />}
+        </Page>
+    );
 }

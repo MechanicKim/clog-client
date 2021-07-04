@@ -9,7 +9,7 @@ function App() {
     return (
         <Router>
             <Switch>
-                <Route exact path="/" component={Home} />
+                <Route exact path="/" render={(props) => <Home {...props} />} />
                 <Route exact path="/view/:id" component={View} />
                 <Route exact path="/form" component={Form} />
                 <Route exact path="/form/:id" component={Form} />
