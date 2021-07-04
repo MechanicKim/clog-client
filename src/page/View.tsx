@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
 import { getCLog, getCLogDays, updateCLogDay, deleteCLog } from '../util/Api';
@@ -37,124 +37,106 @@ const Button = styled.button`
     }
 `;
 
-type ViewState = {
-    cLog: any;
-    cLogDays: Array<CLogDay>;
-    cLogDayIndex: number;
-    popOn: Boolean;
-    count: string;
-};
+export default function View({
+    history,
+    match,
+}: RouteComponentProps<{ id: string }>) {
+    const [cLog, setCLog] = useState<any>({});
+    const [cLogDays, setCLogDays] = useState<Array<CLogDay>>([]);
+    const [cLogDayIndex, setCLogDayIndex] = useState<number>(-1);
+    const [popOn, setPopOn] = useState<Boolean>(false);
+    const [count, setCount] = useState<string>('');
 
-export default class View extends React.Component<
-    RouteComponentProps<{ id: string }>,
-    ViewState
-> {
-    state: ViewState = {
-        cLog: {},
-        cLogDays: [],
-        cLogDayIndex: -1,
-        popOn: false,
-        count: '',
-    };
-
-    async componentDidMount() {
-        const { id } = this.props.match.params;
-
-        try {
-            let cLog = await getCLog(id);
-            const cLogDays = await getCLogDays(id);
-            cLog.count = 0;
-            cLogDays.forEach((day: CLogDay) => {
-                cLog.count += day.count;
-            });
-
-            this.setState({
-                cLog,
-                cLogDays,
-            });
-        } catch (err) {
-            console.error(err);
+    useEffect(() => {
+        const { id } = match.params;
+        if (id) {
+            requestCLogData(id);
         }
-    }
+    }, []);
 
-    render() {
-        const { cLog, cLogDays, popOn, count } = this.state;
-
-        const dayNum = moment().diff(
-            moment(cLog.start, 'YYYY.MM.DD').startOf('days'),
-            'days',
-        );
-
-        return (
-            <Page>
-                <Header />
-                <Section>
-                    <Stat cLog={cLog} />
-                    <Wrap>
-                        <DayBox
-                            cLogDays={cLogDays}
-                            dayNum={dayNum}
-                            select={this.selectBox}
-                        />
-                        <Chart cLogDays={cLogDays} />
-                    </Wrap>
-                    <Group>
-                        <Button onClick={() => this.props.history.goBack()}>
-                            목록
-                        </Button>
-                        <Button onClick={() => this.updateLog()}>수정</Button>
-                        <Button onClick={() => this.deleteLog()}>삭제</Button>
-                    </Group>
-                </Section>
-                {popOn && <Popup count={count} regist={this.registCount} />}
-            </Page>
-        );
-    }
-
-    updateLog = () => {
-        const { cLog } = this.state;
-        this.props.history.push(`/form/${cLog.id}`);
-    };
-
-    deleteLog = async () => {
-        const confirmed = window.confirm(
-            '해당 챌린지의 모든 기록이 삭제됩니다. 삭제할까요?',
-        );
-        if (confirmed) {
-            const { cLog } = this.state;
-            alert(await deleteCLog(cLog.id));
-            this.props.history.goBack();
-        }
-    };
-
-    selectBox = (cLogDayIndex: number) => {
-        const { cLogDays } = this.state;
-        this.setState({
-            cLogDayIndex,
-            popOn: true,
-            count: String(cLogDays[cLogDayIndex].count),
-        });
-    };
-
-    registCount = (count: string) => {
-        const { cLog, cLogDays, cLogDayIndex } = this.state;
-        cLogDays[cLogDayIndex].count = +count;
-
+    const requestCLogData = async (id: string) => {
+        let cLog = await getCLog(id);
+        const cLogDays = await getCLogDays(id);
         cLog.count = 0;
         cLogDays.forEach((day: CLogDay) => {
             cLog.count += day.count;
         });
 
+        setCLog(cLog);
+        setCLogDays(cLogDays);
+    };
+
+    const updateLog = () => {
+        history.push(`/form/${cLog.id}`);
+    };
+
+    const deleteLog = async () => {
+        const confirmed = window.confirm(
+            '해당 챌린지의 모든 기록이 삭제됩니다. 삭제할까요?',
+        );
+        if (confirmed) {
+            alert(await deleteCLog(cLog.id));
+            history.goBack();
+        }
+    };
+
+    const selectBox = (cLogDayIndex: number) => {
+        setCLogDayIndex(cLogDayIndex);
+        setPopOn(true);
+        setCount(String(cLogDays[cLogDayIndex].count));
+    };
+
+    const registCount = (count: string) => {
+        const newCLogDays = [...cLogDays];
+        newCLogDays[cLogDayIndex].count = +count;
+
+        const newCLog = {
+            ...cLog,
+            count: 0,
+        };
+
+        newCLogDays.forEach((day: CLogDay) => {
+            newCLog.count += day.count;
+        });
+
         try {
-            updateCLogDay(cLogDays[cLogDayIndex]);
-            this.setState({
-                cLogDays,
-                cLogDayIndex: -1,
-                count: '',
-                popOn: false,
-            });
+            updateCLogDay(newCLogDays[cLogDayIndex]);
+
+            setCLogDays(newCLogDays);
+            setCLog(newCLog);
+            setCLogDayIndex(-1);
+            setCount('');
+            setPopOn(false);
         } catch (err) {
             console.error(err);
         }
     };
+
+    const dayNum = moment().diff(
+        moment(cLog.start, 'YYYY.MM.DD').startOf('days'),
+        'days',
+    );
+
+    return (
+        <Page>
+            <Header />
+            <Section>
+                <Stat cLog={cLog} />
+                <Wrap>
+                    <DayBox
+                        cLogDays={cLogDays}
+                        dayNum={dayNum}
+                        select={selectBox}
+                    />
+                    <Chart cLogDays={cLogDays} />
+                </Wrap>
+                <Group>
+                    <Button onClick={() => history.goBack()}>목록</Button>
+                    <Button onClick={() => updateLog()}>수정</Button>
+                    <Button onClick={() => deleteLog()}>삭제</Button>
+                </Group>
+            </Section>
+            {popOn && <Popup count={count} regist={registCount} />}
+        </Page>
+    );
 }

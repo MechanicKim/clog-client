@@ -10,7 +10,11 @@ function App() {
         <Router>
             <Switch>
                 <Route exact path="/" render={(props) => <Home {...props} />} />
-                <Route exact path="/view/:id" component={View} />
+                <Route
+                    exact
+                    path="/view/:id"
+                    render={(props) => <View {...props} />}
+                />
                 <Route exact path="/form" component={Form} />
                 <Route exact path="/form/:id" component={Form} />
             </Switch>
