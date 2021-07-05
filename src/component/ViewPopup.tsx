@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const Wrap = styled.div`
@@ -52,41 +52,25 @@ const Button = styled.button`
     }
 `;
 
-type PopupProps = {
-    count: string;
+interface PopupProps {
+    prevCount: string;
     regist: Function;
-};
+}
 
-type PopupState = {
-    count: string;
-};
+export default function ViewPopup({ prevCount, regist }: PopupProps) {
+    const [count, setCount] = useState<string>(prevCount);
 
-export default class ViewPopup extends React.Component<PopupProps, PopupState> {
-    state: PopupState = {
-        count: this.props.count,
+    const onChangeCount = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCount(e.target.value);
     };
 
-    render() {
-        const { count } = this.state;
-        const { regist } = this.props;
-        return (
-            <Wrap>
-                <Popup>
-                    <Title>횟수를 입력하세요.</Title>
-                    <Input
-                        value={count}
-                        onChange={this.onChangeCount}
-                        type="number"
-                    />
-                    <Button onClick={() => regist(count)}>확인</Button>
-                </Popup>
-            </Wrap>
-        );
-    }
-
-    onChangeCount = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            count: e.target.value,
-        });
-    };
+    return (
+        <Wrap>
+            <Popup>
+                <Title>횟수를 입력하세요.</Title>
+                <Input value={count} onChange={onChangeCount} type="number" />
+                <Button onClick={() => regist(count)}>확인</Button>
+            </Popup>
+        </Wrap>
+    );
 }

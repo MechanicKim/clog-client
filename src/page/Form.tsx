@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
 import { createCLog, updateCLog, getCLog } from '../util/Api';
@@ -58,128 +58,52 @@ const Button = styled.button`
     }
 `;
 
-type FormState = {
-    title: string;
-    desc: string;
-    days: string;
-    total: string;
-    update: boolean;
-};
+export default function CLogForm({
+    history,
+    match,
+}: RouteComponentProps<{ id: string }>) {
+    const [title, setTitle] = useState('');
+    const [desc, setDesc] = useState('');
+    const [days, setDays] = useState('');
+    const [total, setTotal] = useState('');
+    const [update, setUpdate] = useState(false);
 
-export default class CLogForm extends React.Component<
-    RouteComponentProps<{ id: string }>,
-    FormState
-> {
-    state: FormState = {
-        title: '',
-        desc: '',
-        days: '',
-        total: '',
-        update: false,
-    };
-    cLog: any;
-
-    async componentDidMount() {
-        const cLogId: any = this.props.match.params.id;
+    useEffect(() => {
+        const cLogId = match.params.id;
         if (!cLogId) return;
+        requestCLog(cLogId);
+    }, []);
 
+    const requestCLog = async (cLogId: string) => {
         try {
-            this.cLog = await getCLog(cLogId);
-            this.setState({
-                title: this.cLog.title,
-                desc: this.cLog.desc,
-                days: String(this.cLog.days),
-                total: String(this.cLog.total),
-                update: true,
-            });
+            const cLog = await getCLog(cLogId);
+            setTitle(cLog.title);
+            setDesc(cLog.desc);
+            setDays(cLog.days);
+            setTotal(cLog.total);
+            setUpdate(true);
         } catch (err) {
             console.error(err);
         }
-    }
-
-    render() {
-        const { title, desc, days, total, update } = this.state;
-
-        return (
-            <Page>
-                <Form>
-                    <Input
-                        type="text"
-                        name="title"
-                        value={title}
-                        onChange={this.onChangeTitle}
-                        placeholder="제목"
-                    />
-                    <Textarea
-                        name="desc"
-                        value={desc}
-                        onChange={this.onChangeDesc}
-                        rows={5}
-                        placeholder="간단한 설명"
-                    ></Textarea>
-                    <Input
-                        type="number"
-                        name="days"
-                        value={days}
-                        onChange={this.onChangeDays}
-                        placeholder="챌린지 일수(최대 30일)"
-                        readOnly={update}
-                    />
-                    <Input
-                        type="number"
-                        name="total"
-                        value={total}
-                        onChange={this.onChangeTotal}
-                        placeholder="챌린지 횟수"
-                        readOnly={update}
-                    />
-                    <Group>
-                        <Button onClick={() => this.props.history.goBack()}>
-                            취소
-                        </Button>
-                        {!update && (
-                            <Button onClick={() => this.createChallenge()}>
-                                도전!
-                            </Button>
-                        )}
-                        {update && (
-                            <Button onClick={() => this.updateChallenge()}>
-                                수정
-                            </Button>
-                        )}
-                    </Group>
-                </Form>
-            </Page>
-        );
-    }
-
-    onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            title: e.target.value,
-        });
     };
 
-    onChangeDesc = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        this.setState({
-            desc: e.target.value,
-        });
+    const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.target.value);
     };
 
-    onChangeDays = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            days: e.target.value,
-        });
+    const onChangeDesc = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setDesc(e.target.value);
     };
 
-    onChangeTotal = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            total: e.target.value,
-        });
+    const onChangeDays = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDays(e.target.value);
     };
 
-    validateForm = () => {
-        const { title, desc, days, total } = this.state;
+    const onChangeTotal = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTotal(e.target.value);
+    };
 
+    const validateForm = () => {
         if (!title) {
             alert('제목을 입력하세요.');
             return false;
@@ -208,31 +132,77 @@ export default class CLogForm extends React.Component<
         return true;
     };
 
-    createChallenge = async () => {
-        if (!this.validateForm()) return;
+    const createChallenge = async () => {
+        if (!validateForm()) return;
 
         try {
-            const { title, desc, days, total } = this.state;
             await createCLog(title, desc, +days, +total);
-            this.props.history.goBack();
+            history.goBack();
         } catch (err) {
             console.error(err);
         }
     };
 
-    updateChallenge = async () => {
-        if (!this.validateForm()) return;
+    const updateChallenge = async () => {
+        if (!validateForm()) return;
 
-        const { title, desc } = this.state;
-
-        this.cLog.title = title;
-        this.cLog.desc = desc;
-
+        const cLogId = match.params.id;
+        const cLog = await getCLog(cLogId);
         try {
-            await updateCLog(this.cLog);
-            this.props.history.goBack();
+            await updateCLog({
+                ...cLog,
+                title,
+                desc,
+            });
+            history.goBack();
         } catch (err) {
             console.error(err);
         }
     };
+
+    return (
+        <Page>
+            <Form>
+                <Input
+                    type="text"
+                    name="title"
+                    value={title}
+                    onChange={onChangeTitle}
+                    placeholder="제목"
+                />
+                <Textarea
+                    name="desc"
+                    value={desc}
+                    onChange={onChangeDesc}
+                    rows={5}
+                    placeholder="간단한 설명"
+                ></Textarea>
+                <Input
+                    type="number"
+                    name="days"
+                    value={days}
+                    onChange={onChangeDays}
+                    placeholder="챌린지 일수(최대 30일)"
+                    readOnly={update}
+                />
+                <Input
+                    type="number"
+                    name="total"
+                    value={total}
+                    onChange={onChangeTotal}
+                    placeholder="챌린지 횟수"
+                    readOnly={update}
+                />
+                <Group>
+                    <Button onClick={() => history.goBack()}>취소</Button>
+                    {!update && (
+                        <Button onClick={() => createChallenge()}>도전!</Button>
+                    )}
+                    {update && (
+                        <Button onClick={() => updateChallenge()}>수정</Button>
+                    )}
+                </Group>
+            </Form>
+        </Page>
+    );
 }

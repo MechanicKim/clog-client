@@ -136,7 +136,7 @@ export default function View({
                     <Button onClick={() => deleteLog()}>삭제</Button>
                 </Group>
             </Section>
-            {popOn && <Popup count={count} regist={registCount} />}
+            {popOn && <Popup prevCount={count} regist={registCount} />}
         </Page>
     );
 }
